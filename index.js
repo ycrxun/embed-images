@@ -5,9 +5,11 @@ module.exports = function (input, output, cb) {
     if (err && cb) return cb(err)
     var original = String(data)
     var converted = String(data)
-    original.split('\n').forEach(function (line) {
-      if (line.indexOf('![png]') === 0) {
-        var file = line.slice(7, line.length - 1)
+    original.split('\n').forEach(function (line) {  
+      var regex = line.match(/[^(\]\))]*?\.(png|jpg)/)
+	  console.log(regex)
+	  if (regex) {
+        var file = regex[0]
         var im = fs.readFileSync(file)
         var src = 'data:image/png;base64,' + im.toString('base64')
         var insert = '<img src="' + src + '" />'
